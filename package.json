@@ -1,6 +1,7 @@
 {
   "name": "news-project",
   "private": true,
+  "proxy": "https://api.nytimes.com/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
