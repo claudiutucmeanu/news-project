@@ -13,6 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
   body {
     margin: 0 4px;
+    #root{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 }
 
