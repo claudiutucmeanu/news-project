@@ -1,41 +1,42 @@
-import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-
-// type;
+import { News, NyTimesNews } from "./News.types";
+import NewsCard from "./newsCard/NewsCard";
 
 function NewsPage() {
-	const [timesNews, setTimesNews] = useState<undefined | []>(undefined);
+	const [timesNews, setTimesNews] = useState<undefined | News[]>(undefined);
 
 	useEffect(() => {
-		// console.log(getInfo());
 		fetch(
 			`https://cors-anywhere.herokuapp.com/https://api.nytimes.com/svc/archive/v1/2024/8.json?api-key=${
 				import.meta.env.VITE_API_NY_TIMES_KEY
 			}`
 		)
 			.then((res) => res.json())
-			.then((data) => setTimesNews(data.response.docs));
+			.then((data) => {
+				const news: News[] = [];
+				data.response.docs.map((art: NyTimesNews) => {
+					news.push({
+						headline: art.headline.main,
+						paragraph: art.lead_paragraph,
+						date: art.pub_date,
+						category: art.type_of_material,
+						author: art.byline.original,
+						source: art.source,
+						snippet: art.snippet,
+					});
+				});
+				setTimesNews(news);
+			});
 	}, []);
-
-	console.log(timesNews);
 
 	return (
 		<>
 			{timesNews &&
-				timesNews.map((art, idx) => {
+				timesNews.map((art: News, idx) => {
 					return (
-						<Card key={idx}>
-							<CardActionArea>
-								<CardContent>
-									<Typography gutterBottom variant='h5' component='div'>
-										{art.headline.main}
-									</Typography>
-									<Typography variant='body2' color='text.secondary'>
-										{art.lead_paragraph}
-									</Typography>
-								</CardContent>
-							</CardActionArea>
-						</Card>
+						<>
+							<NewsCard art={art} key={idx} />
+						</>
 					);
 				})}
 		</>
