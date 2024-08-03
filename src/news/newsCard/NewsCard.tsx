@@ -33,13 +33,7 @@ const NewsCard = (props: { art: News }) => {
 		<Card className='newsCard'>
 			<CardHeader
 				avatar={<Avatar src={imageMapper[props.art.api]} />}
-				title={
-					props.art.headline +
-					" " +
-					props.art.source +
-					" " +
-					Date.parse(props.art.date)
-				}
+				title={props.art.headline}
 				subheader={props.art?.author}
 			/>
 			<CardContent>
