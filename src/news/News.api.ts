@@ -1,26 +1,24 @@
-import { GuardianNews, News, NewsApiNews, NyTimesNews } from "./News.types";
-
-export const getNyTimesNews = () => {
+import { Category, GuardianNews, News, NewsApiNews, NyTimesNews } from "./News.types";
+export const getNyTimesNews = (category: Category) => {
     return fetch(
-        `https://cors-anywhere.herokuapp.com/https://api.nytimes.com/svc/archive/v1/2024/8.json?api-key=${
+        `https://api.nytimes.com/svc/topstories/v2/${category === 'news' ? 'world' : category}.json?api-key=${
             import.meta.env.VITE_API_NY_TIMES_KEY
         }`
     )
         .then((res) => res.json())
-        .then((data) => {
+        .then((data) => {            
             const timesNews: News[] = [];
-            data.response.docs
-                .slice(data.response.docs.length - 20, data.response.docs.length)
-                .map((art: NyTimesNews) => {
+            data.results
+                .slice(data.results.length - 7, data.results.length)
+                .map((art: NyTimesNews) => {                    
                     timesNews.push({
-                        headline: art.headline.main,
-                        paragraph: art.lead_paragraph,
-                        date: art.pub_date,
-                        category: art.type_of_material,
-                        author: art.byline.original,
-                        source: art.source,
-                        snippet: art.snippet,
-                        url: art.web_url,
+                        title: art.title,
+                        paragraph: art.abstract,
+                        date: art.created_date,
+                        category: art.section,
+                        author: art.byline,
+                        source: "NYTimes",
+                        url: art.url,
                         api: "NYTimes",
                     });
                 });
@@ -28,9 +26,9 @@ export const getNyTimesNews = () => {
         });
 }
 
-export const getGuardianNews = () => {
+export const getGuardianNews = (category: Category) => {
     return fetch(
-        `https://content.guardianapis.com/search?page-size=20&api-key=${
+        `https://content.guardianapis.com/search?section=${category === 'sports' ? 'sport' : category}&api-key=${
             import.meta.env.VITE_API_GUARDIAN_KEY
         }`
     )
@@ -39,7 +37,7 @@ export const getGuardianNews = () => {
             const guardianNews: News[] = [];
             data.response.results.map((art: GuardianNews) => {
                 guardianNews.push({
-                    headline: art.webTitle,
+                    title: art.webTitle,
                     date: art.webPublicationDate,
                     category: art.pillarName,
                     source: "Guardian",
@@ -51,9 +49,9 @@ export const getGuardianNews = () => {
         });
 }
 
-export const getNewsApiNews = () => {
+export const getNewsApiNews = (category: Category) => {
     return fetch(
-        `https://newsapi.org/v2/top-headlines?country=us&apiKey=${
+        `https://newsapi.org/v2/top-headlines?category=${category === 'news' ? 'general' : category}&country=us&pageSize=7&apiKey=${
             import.meta.env.VITE_API_NEWS_API_KEY
         }`
     )
@@ -63,7 +61,7 @@ export const getNewsApiNews = () => {
             data.articles.map((art: NewsApiNews) => {
                 if (art.title !== "[Removed]") {
                     newsApiNews.push({
-                        headline: art.title,
+                        title: art.title,
                         date: art.publishedAt,
                         category: "News",
                         source: art.source.name,

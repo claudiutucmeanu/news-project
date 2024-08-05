@@ -1,5 +1,5 @@
 export type News = {
-	headline: string;
+	title: string;
 	paragraph?: string;
 	date: string;
 	category: string;
@@ -11,14 +11,14 @@ export type News = {
 };
 
 export type NyTimesNews = {
-    headline: { main: string };
-    lead_paragraph: string;
-    pub_date: string;
+    title: string;
+    abstract: string;
+    created_date: string;
     source: string;
-    byline: { original: string };
-    type_of_material: string;
+    byline: string;
+    section: string;
     snippet: string;
-    web_url: string;
+    url: string;
 }
 
 export type GuardianNews = {
@@ -38,3 +38,5 @@ export type NewsApiNews = {
     url: string;
     publishedAt: string;
 }
+
+export type Category = "news" | "sports" | "books" | "politics" | "science" | "technology"
