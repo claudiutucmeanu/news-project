@@ -49,9 +49,7 @@ export const getGuardianNews = (category: Category, search?: string, fromDate?: 
         });
 }
 
-export const getNewsApiNews = (category: Category, search?: string, fromDate?: string, toDate?: string) => {
-    console.log(fromDate, toDate);
-    
+export const getNewsApiNews = (category: Category, search?: string, fromDate?: string, toDate?: string) => {    
     return fetch(
         `https://newsapi.org/v2/top-headlines?${search ? 'q=' + search + '&' : ''}category=${category === 'news' ? 'general' : category}${fromDate && toDate ? '&from='+fromDate+'&to='+toDate : ''}&country=us&pageSize=12&apiKey=${
             import.meta.env.VITE_API_NEWS_API_KEY

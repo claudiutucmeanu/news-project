@@ -134,6 +134,12 @@ const NewsToolbar = ({
 						onChange={(e) => setSearch(e.target.value)}
 						placeholder='Search'
 						inputProps={{ "aria-label": "search google maps" }}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								handleSearch();
+							}
+						}}
 					/>
 					<IconButton onClick={handleSearch} type='button' aria-label='search'>
 						<SearchIcon />
@@ -152,7 +158,11 @@ const NewsToolbar = ({
 							onChange={(e) => setCategory(e.target.value as Category)}
 						>
 							{categories.map((cat) => {
-								return <MenuItem value={cat}>{cat.toUpperCase()}</MenuItem>;
+								return (
+									<MenuItem key={cat} value={cat}>
+										{cat.toUpperCase()}
+									</MenuItem>
+								);
 							})}
 						</Select>
 					</FormControl>

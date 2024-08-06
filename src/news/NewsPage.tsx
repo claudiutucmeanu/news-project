@@ -15,13 +15,9 @@ function NewsPage() {
 					.sort((a, b) => {
 						return Date.parse(b.date) - Date.parse(a.date);
 					})
-					.map((art: News, idx) => {
-						return (
-							<>
-								<NewsCard art={art} key={idx} />
-							</>
-						);
-					})}
+					.map((art: News, i: number) => (
+						<NewsCard art={art} key={art.url + i} />
+					))}
 		</>
 	);
 }
