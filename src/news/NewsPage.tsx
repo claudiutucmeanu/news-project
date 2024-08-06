@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { Category, News } from "./News.types";
+import { useState } from "react";
+import { News } from "./News.types";
 import NewsCard from "./newsCard/NewsCard";
-import { getGuardianNews, getNewsApiNews, getNyTimesNews } from "./News.api";
 import "./NewsPage.scss";
 import NewsToolbar from "./newsToolbar/NewsToolbar";
 

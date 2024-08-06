@@ -9,7 +9,7 @@ export const getNyTimesNews = (category: Category) => {
         .then((data) => {            
             const timesNews: News[] = [];
             data.results
-                .slice(data.results.length - 7, data.results.length)
+                .slice(data.results.length - 12, data.results.length)
                 .map((art: NyTimesNews) => {                    
                     timesNews.push({
                         title: art.title,
@@ -26,9 +26,9 @@ export const getNyTimesNews = (category: Category) => {
         });
 }
 
-export const getGuardianNews = (category: Category) => {
+export const getGuardianNews = (category: Category, search?: string, fromDate?: string, toDate?: string) => {
     return fetch(
-        `https://content.guardianapis.com/search?section=${category === 'sports' ? 'sport' : category}&api-key=${
+        `https://content.guardianapis.com/search?${search ? 'q=' + search + '&' : ''}section=${category === 'sports' ? 'sport' : category}${fromDate && toDate ? '&from-date='+fromDate+'&to-date='+toDate : ''}&page-size=12&api-key=${
             import.meta.env.VITE_API_GUARDIAN_KEY
         }`
     )
@@ -49,9 +49,11 @@ export const getGuardianNews = (category: Category) => {
         });
 }
 
-export const getNewsApiNews = (category: Category) => {
+export const getNewsApiNews = (category: Category, search?: string, fromDate?: string, toDate?: string) => {
+    console.log(fromDate, toDate);
+    
     return fetch(
-        `https://newsapi.org/v2/top-headlines?category=${category === 'news' ? 'general' : category}&country=us&pageSize=7&apiKey=${
+        `https://newsapi.org/v2/top-headlines?${search ? 'q=' + search + '&' : ''}category=${category === 'news' ? 'general' : category}${fromDate && toDate ? '&from='+fromDate+'&to='+toDate : ''}&country=us&pageSize=12&apiKey=${
             import.meta.env.VITE_API_NEWS_API_KEY
         }`
     )
